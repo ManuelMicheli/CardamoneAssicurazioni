@@ -269,7 +269,7 @@ const ServicesSection = () => {
         className="absolute top-20 right-0 w-[500px] h-[500px] bg-primary-100/30 rounded-full blur-[120px]"
       />
 
-      <div className="container-custom relative z-10">
+      <div className="container mx-auto px-6 lg:px-12 relative z-10 max-w-[1400px]">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -280,52 +280,85 @@ const ServicesSection = () => {
           <span className="inline-block px-4 py-1.5 rounded-full bg-primary-50 text-primary-700 text-sm font-semibold mb-4 border border-primary-100">
             I Nostri Servizi
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-neutral-900 mb-4">
+          <h2 
+            className="font-display font-bold text-neutral-900 mb-4"
+            style={{ fontSize: 'clamp(28px, 5vw, 48px)' }}
+          >
             Soluzioni per <span className="text-primary-600">Ogni Esigenza</span>
           </h2>
-          <p className="text-lg text-neutral-600">
+          <p className="text-base lg:text-lg text-neutral-600">
             Prodotti assicurativi delle migliori compagnie, selezionati per te.
           </p>
         </motion.div>
 
-        {/* Services Grid - Desktop */}
+        {/* Services Grid - Desktop - ← NUOVO LAYOUT PREMIUM */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
         >
           {services.map((service, index) => (
             <motion.div key={index} variants={itemVariants}>
               <Link to="/servizi">
+                {/* ← CARD PREMIUM STYLE con gradient background e hover elevato */}
                 <motion.div
-                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                  className="group relative h-full bg-white rounded-2xl border border-neutral-100 p-6 hover:border-primary-200 hover:shadow-xl hover:shadow-primary-100/30 transition-all duration-500"
+                  whileHover={{ y: -8, transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] } }}
+                  className="group relative h-full rounded-[16px] p-7 transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%)',
+                    border: '1px solid rgba(59, 130, 246, 0.15)',
+                    boxShadow: '0 4px 20px rgba(30, 58, 138, 0.08)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(30, 58, 138, 0.15)'
+                    e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.5)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(30, 58, 138, 0.08)'
+                    e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.15)'
+                  }}
                 >
                   {service.popular && (
-                    <div className="absolute -top-3 right-6 px-3 py-1 bg-secondary-500 text-white text-xs font-semibold rounded-full">
+                    <div className="absolute -top-3 right-6 px-3 py-1.5 bg-gradient-to-r from-secondary-500 to-secondary-400 text-white text-xs font-semibold rounded-full shadow-lg">
                       Più richiesto
                     </div>
                   )}
 
+                  {/* Icon animato 24x24 */}
                   <motion.div 
-                    className="w-14 h-14 rounded-xl bg-primary-50 group-hover:bg-primary-100 flex items-center justify-center mb-5 transition-colors duration-300"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="w-16 h-16 rounded-xl flex items-center justify-center mb-5 transition-all duration-300"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)',
+                    }}
+                    whileHover={{ scale: 1.15 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <service.icon className="w-7 h-7 text-primary-600" />
+                    <service.icon className="w-8 h-8 text-primary-600" />
                   </motion.div>
 
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xl font-display font-bold text-neutral-900">{service.title}</h3>
-                    <ArrowUpRight size={20} className="text-neutral-300 group-hover:text-primary-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                  {/* Title - H4 22px bold */}
+                  <h4 className="text-[22px] font-display font-bold text-primary-900 mb-3">
+                    {service.title}
+                  </h4>
+
+                  {/* Description - Body 16px, 2-3 righe max */}
+                  <p className="text-neutral-600 text-base leading-relaxed mb-4" style={{ lineHeight: 1.6 }}>
+                    {service.description}
+                  </p>
+
+                  {/* Link con arrow icon, hover glow */}
+                  <div className="flex items-center gap-2 text-primary-600 font-semibold text-sm group-hover:gap-3 transition-all duration-300">
+                    <span>Scopri di più</span>
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </div>
 
-                  <p className="text-neutral-600 text-sm leading-relaxed">{service.description}</p>
-
-                  {/* Animated line */}
+                  {/* Animated line bottom */}
                   <motion.div 
-                    className="absolute bottom-0 left-6 right-6 h-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full origin-left"
+                    className="absolute bottom-0 left-0 right-0 h-1 rounded-b-[16px]"
+                    style={{
+                      background: 'linear-gradient(90deg, rgba(59, 130, 246, 0) 0%, rgba(59, 130, 246, 0.3) 50%, rgba(59, 130, 246, 0) 100%)',
+                    }}
                     initial={{ scaleX: 0 }}
                     whileHover={{ scaleX: 1 }}
                     transition={{ duration: 0.3 }}

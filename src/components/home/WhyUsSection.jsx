@@ -3,12 +3,21 @@ import { useInView } from 'react-intersection-observer'
 import { Shield, Clock, Users, Award, CheckCircle, ArrowRight, Star } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import InteractiveBackground from '../InteractiveBackground'
+import { useState, useEffect } from 'react'
 
 const WhyUsSection = () => {
+  const [isMobile, setIsMobile] = useState(false)
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   })
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const reasons = [
     { icon: Award, title: 'Eccellenza Riconosciuta', description: '4.9/5 stelle su Google con oltre 150 recensioni verificate.' },
@@ -28,7 +37,11 @@ const WhyUsSection = () => {
   }
 
   return (
-    <section ref={ref} className="relative py-24 overflow-hidden">
+    <section 
+      ref={ref} 
+      className="relative overflow-hidden"
+      style={{ padding: isMobile ? 'clamp(4rem, 8vw, 6rem) 0' : '6rem 0' }}
+    >
       {/* Interactive Background - Grid animata */}
       <InteractiveBackground variant="grid" color="gradient" intensity={0.35} />
       
@@ -40,21 +53,24 @@ const WhyUsSection = () => {
         className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary-100/30 rounded-full blur-[120px]"
       />
 
-      <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className={isMobile ? 'relative z-10 px-4' : 'container mx-auto px-6 lg:px-12 relative z-10 max-w-[1400px]'}>
+        <div className={isMobile ? "space-y-8" : "grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"}>
           {/* Left Content */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, x: isMobile ? 0 : -50, y: isMobile ? 20 : 0 }}
+            animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block px-4 py-1.5 rounded-full bg-secondary-50 text-secondary-700 text-sm font-semibold mb-4 border border-secondary-100">
               Perché Sceglierci
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-neutral-900 mb-6">
+            <h2 
+              className="font-display font-bold text-neutral-900 mb-4 lg:mb-6"
+              style={{ fontSize: isMobile ? 'clamp(24px, 6vw, 32px)' : 'clamp(32px, 4vw, 48px)' }}
+            >
               La Tua Sicurezza è la Nostra <span className="text-secondary-500">Priorità</span>
             </h2>
-            <p className="text-lg text-neutral-600 mb-8">
+            <p className={`text-neutral-600 ${isMobile ? 'text-sm mb-6' : 'text-base lg:text-lg mb-8'}`} style={{ lineHeight: 1.6 }}>
               Da oltre 15 anni accompagniamo i nostri clienti con competenza, trasparenza e un approccio personalizzato.
             </p>
 
@@ -77,27 +93,45 @@ const WhyUsSection = () => {
             </Link>
           </motion.div>
 
-          {/* Right Content - Cards */}
+          {/* Right Content - ← FEATURES GRID 2x2 RESPONSIVE */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
-            className="grid sm:grid-cols-2 gap-4"
+            className={`grid gap-4 lg:gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}
           >
             {reasons.map((reason, index) => (
               <motion.div key={index} variants={itemVariants}>
                 <motion.div
-                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                  className="h-full bg-white rounded-2xl border border-neutral-100 p-6 hover:border-primary-200 hover:shadow-xl hover:shadow-primary-100/30 transition-all duration-500"
+                  whileHover={!isMobile ? { y: -8, transition: { duration: 0.3 } } : {}}
+                  whileTap={isMobile ? { scale: 1.02 } : {}}
+                  className={`h-full rounded-[16px] transition-all duration-300 ${isMobile ? 'p-5' : 'p-6 lg:p-8'}`}
+                  style={{
+                    background: 'linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%)',
+                    border: '1px solid rgba(59, 130, 246, 0.15)',
+                    boxShadow: '0 4px 20px rgba(30, 58, 138, 0.08)',
+                  }}
+                  onMouseEnter={!isMobile ? (e) => {
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(30, 58, 138, 0.15)'
+                    e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.5)'
+                  } : undefined}
+                  onMouseLeave={!isMobile ? (e) => {
+                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(30, 58, 138, 0.08)'
+                    e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.15)'
+                  } : undefined}
                 >
+                  {/* Icon grande 48x48 con semi-transparent background */}
                   <motion.div 
-                    className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mb-4"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className={`rounded-xl flex items-center justify-center mb-4 ${isMobile ? 'w-14 h-14' : 'w-16 h-16'}`}
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.05) 100%)',
+                    }}
+                    whileHover={!isMobile ? { scale: 1.1, rotate: 5 } : {}}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <reason.icon className="w-6 h-6 text-primary-600" />
+                    <reason.icon className={`text-primary-600 ${isMobile ? 'w-7 h-7' : 'w-8 h-8'}`} />
                   </motion.div>
-                  <h3 className="text-lg font-display font-bold text-neutral-900 mb-2">{reason.title}</h3>
+                  <h3 className={`font-display font-bold text-neutral-900 mb-2 ${isMobile ? 'text-base' : 'text-lg lg:text-xl'}`}>{reason.title}</h3>
                   <p className="text-neutral-600 text-sm">{reason.description}</p>
                 </motion.div>
               </motion.div>
