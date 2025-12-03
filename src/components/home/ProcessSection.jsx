@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { MessageSquare, FileSearch, CheckCircle, Handshake, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import InteractiveBackground from '../InteractiveBackground'
 
 const ProcessSection = () => {
   const [ref, inView] = useInView({
@@ -28,6 +29,9 @@ const ProcessSection = () => {
 
   return (
     <section ref={ref} className="relative py-24 overflow-hidden bg-primary-600">
+      {/* Interactive Background - Waves animate su sfondo blu */}
+      <InteractiveBackground variant="waves" color="primary" intensity={0.3} />
+      
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800" />
       <motion.div

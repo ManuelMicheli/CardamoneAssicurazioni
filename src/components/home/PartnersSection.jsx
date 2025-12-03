@@ -1,5 +1,6 @@
 import { useInView } from 'react-intersection-observer'
 import { motion } from 'framer-motion'
+import InteractiveBackground from '../InteractiveBackground'
 
 const PartnersSection = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -27,7 +28,9 @@ const PartnersSection = () => {
   )
 
   return (
-    <section ref={ref} className="py-16 bg-white overflow-hidden">
+    <section ref={ref} className="relative py-16 bg-white overflow-hidden">
+      {/* Interactive Background - Forme geometriche subtle */}
+      <InteractiveBackground variant="geometric" color="neutral" intensity={0.25} />
       <div className="container-custom mb-8">
         <motion.p
           initial={{ opacity: 0, y: 20 }}

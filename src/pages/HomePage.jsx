@@ -13,11 +13,11 @@ const HomePage = () => {
     <>
       <HeroSection />
       <StatsSection />
+      <PartnersSection />
       <ServicesSection />
       <ProcessSection />
       <WhyUsSection />
       <TestimonialsSection />
-      <PartnersSection />
       <FAQSection />
       <CTASection />
     </>

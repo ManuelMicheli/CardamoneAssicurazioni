@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import CountUp from '../CountUp'
 import { Users, Star, Calendar, TrendingUp } from 'lucide-react'
+import InteractiveBackground from '../InteractiveBackground'
 
 const StatsSection = () => {
   const [ref, inView] = useInView({
@@ -35,6 +36,9 @@ const StatsSection = () => {
 
   return (
     <section ref={ref} className="relative py-20 bg-white overflow-hidden">
+      {/* Interactive Background - Particles subtle */}
+      <InteractiveBackground variant="particles" color="primary" intensity={0.3} />
+      
       {/* Subtle background */}
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-50/50 to-white" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neutral-200 to-transparent" />

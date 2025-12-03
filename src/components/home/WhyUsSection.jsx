@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Shield, Clock, Users, Award, CheckCircle, ArrowRight, Star } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import InteractiveBackground from '../InteractiveBackground'
 
 const WhyUsSection = () => {
   const [ref, inView] = useInView({
@@ -28,6 +29,9 @@ const WhyUsSection = () => {
 
   return (
     <section ref={ref} className="relative py-24 overflow-hidden">
+      {/* Interactive Background - Grid animata */}
+      <InteractiveBackground variant="grid" color="gradient" intensity={0.35} />
+      
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-neutral-50 to-white" />
       <motion.div
