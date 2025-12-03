@@ -96,7 +96,7 @@ const ChiSiamoPage = () => {
       </section>
 
       {/* Stats */}
-      <section className="py-16 bg-primary-600">
+      <section className="py-16 bg-neutral-50">
         <div className="container-custom">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             {[
@@ -112,10 +112,10 @@ const ChiSiamoPage = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <p className="text-4xl font-display font-bold text-white mb-1">
+                <p className="text-4xl font-display font-bold text-primary-600 mb-1">
                   <CountUp end={stat.value} suffix={stat.suffix || ''} />
                 </p>
-                <p className="text-white/70">{stat.label}</p>
+                <p className="text-neutral-600">{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -164,7 +164,7 @@ const ChiSiamoPage = () => {
       </section>
 
       {/* Timeline */}
-      <section ref={timelineRef} className="py-24 bg-primary-600">
+      <section ref={timelineRef} className="py-24 bg-white">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -172,8 +172,11 @@ const ChiSiamoPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-display font-bold text-white">
-              La Nostra <span className="text-secondary-400">Storia</span>
+            <span className="inline-block px-4 py-1.5 rounded-full bg-primary-50 text-primary-700 text-sm font-semibold mb-4 border border-primary-100">
+              La Nostra Storia
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-neutral-900">
+              La Nostra <span className="text-primary-600">Storia</span>
             </h2>
           </motion.div>
 
@@ -186,11 +189,11 @@ const ChiSiamoPage = () => {
                 transition={{ duration: 0.5, delay: index * 0.15 }}
                 className="text-center"
               >
-                <div className="w-16 h-16 rounded-full bg-secondary-500 flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <span className="text-white font-bold">{item.year}</span>
                 </div>
-                <h3 className="text-lg font-display font-bold text-white mb-2">{item.title}</h3>
-                <p className="text-white/60 text-sm">{item.description}</p>
+                <h3 className="text-lg font-display font-bold text-neutral-900 mb-2">{item.title}</h3>
+                <p className="text-neutral-600 text-sm">{item.description}</p>
               </motion.div>
             ))}
           </div>

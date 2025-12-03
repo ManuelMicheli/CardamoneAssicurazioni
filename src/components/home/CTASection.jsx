@@ -28,16 +28,16 @@ const CTASection = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="bg-primary-600 rounded-3xl p-8 lg:p-12 overflow-hidden relative"
+          className="bg-white border border-neutral-200 rounded-3xl p-8 lg:p-12 overflow-hidden relative shadow-xl"
         >
-          {/* Inner background effects */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800" />
+          {/* Inner background effects neutri */}
+          <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-white" />
           <motion.div
-            animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.05, 0.1, 0.05] }}
             transition={{ duration: 10, repeat: Infinity }}
-            className="absolute -top-20 -right-20 w-[400px] h-[400px] bg-secondary-500/20 rounded-full blur-[100px]"
+            className="absolute -top-20 -right-20 w-[400px] h-[400px] bg-primary-100/30 rounded-full blur-[100px]"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:3rem_3rem]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e3a8a03_1px,transparent_1px),linear-gradient(to_bottom,#1e3a8a03_1px,transparent_1px)] bg-[size:3rem_3rem]" />
 
           <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
             {/* Left */}
@@ -48,19 +48,19 @@ const CTASection = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="flex items-center gap-3 mb-6"
               >
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-secondary-400" />
+                <div className="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
-                  <p className="font-display font-bold text-white text-xl">Cardamone</p>
-                  <p className="text-secondary-400 text-sm font-semibold uppercase tracking-wider">Assicurazioni</p>
+                  <p className="font-display font-bold text-neutral-900 text-xl">Cardamone</p>
+                  <p className="text-primary-600 text-sm font-semibold uppercase tracking-wider">Assicurazioni</p>
                 </div>
               </motion.div>
 
-              <h2 className="text-3xl sm:text-4xl font-display font-bold text-white mb-4">
+              <h2 className="text-3xl sm:text-4xl font-display font-bold text-neutral-900 mb-4">
                 Proteggi Ciò Che Ami
               </h2>
-              <p className="text-white/70 mb-8">
+              <p className="text-neutral-600 mb-8">
                 Contattaci oggi per una consulenza gratuita e scopri come possiamo aiutarti.
               </p>
 
@@ -74,7 +74,7 @@ const CTASection = () => {
                 </Link>
                 <a 
                   href="tel:+390000000000"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-neutral-100 text-neutral-700 font-semibold rounded-xl border border-neutral-200 hover:bg-neutral-200 transition-colors"
                 >
                   <Phone size={18} />
                   Chiama
@@ -91,11 +91,11 @@ const CTASection = () => {
                   animate={inView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
                   whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                  className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/15 transition-all duration-300"
+                  className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 hover:bg-primary-50 hover:border-primary-200 transition-all duration-300"
                 >
-                  <contact.icon size={20} className="text-secondary-400 mb-2" />
-                  <p className="text-white/50 text-xs mb-1">{contact.label}</p>
-                  <p className="text-white font-medium text-sm">{contact.value}</p>
+                  <contact.icon size={20} className="text-primary-600 mb-2" />
+                  <p className="text-neutral-500 text-xs mb-1">{contact.label}</p>
+                  <p className="text-neutral-900 font-medium text-sm">{contact.value}</p>
                 </motion.div>
               ))}
             </div>

@@ -54,16 +54,16 @@ const FAQSection = () => {
             </p>
 
             {/* Contact card */}
-            <div className="bg-primary-600 rounded-2xl p-6 text-white">
-              <h4 className="font-display font-bold text-lg mb-4">Non hai trovato la risposta?</h4>
+            <div className="bg-gradient-to-br from-primary-50 to-neutral-50 border border-primary-100 rounded-2xl p-6">
+              <h4 className="font-display font-bold text-lg mb-4 text-neutral-900">Non hai trovato la risposta?</h4>
               <div className="space-y-3">
-                <a href="tel:+390000000000" className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-xl hover:bg-white/20 transition-colors">
-                  <Phone size={18} className="text-secondary-400" />
-                  <span className="text-sm">+39 000 000 0000</span>
+                <a href="tel:+390000000000" className="flex items-center gap-3 px-4 py-3 bg-white border border-neutral-200 rounded-xl hover:bg-primary-50 hover:border-primary-200 transition-colors">
+                  <Phone size={18} className="text-primary-600" />
+                  <span className="text-sm text-neutral-700">+39 000 000 0000</span>
                 </a>
-                <a href="https://wa.me/390000000000" className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-xl hover:bg-white/20 transition-colors">
-                  <MessageCircle size={18} className="text-secondary-400" />
-                  <span className="text-sm">Scrivici su WhatsApp</span>
+                <a href="https://wa.me/390000000000" className="flex items-center gap-3 px-4 py-3 bg-white border border-neutral-200 rounded-xl hover:bg-primary-50 hover:border-primary-200 transition-colors">
+                  <MessageCircle size={18} className="text-primary-600" />
+                  <span className="text-sm text-neutral-700">Scrivici su WhatsApp</span>
                 </a>
               </div>
             </div>
@@ -94,7 +94,7 @@ const FAQSection = () => {
                       {faq.question}
                     </span>
                     <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
-                      openIndex === index ? 'bg-primary-600 text-white' : 'bg-neutral-100 text-neutral-600'
+                      openIndex === index ? 'bg-primary-100 text-primary-700' : 'bg-neutral-100 text-neutral-600'
                     }`}>
                       {openIndex === index ? <Minus size={18} /> : <Plus size={18} />}
                     </div>

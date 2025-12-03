@@ -39,20 +39,17 @@ const ProcessSection = () => {
   return (
     <section 
       ref={ref} 
-      className="relative overflow-hidden bg-primary-600"
+      className="relative overflow-hidden bg-white"
       style={{ padding: isMobile ? 'clamp(4rem, 8vw, 6rem) 0' : '6rem 0' }}
     >
-      {/* Interactive Background - Waves animate su sfondo blu */}
-      <InteractiveBackground variant="waves" color="primary" intensity={0.3} />
-      
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800" />
+      {/* Background neutro */}
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-50 to-white" />
       <motion.div
-        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
         transition={{ duration: 15, repeat: Infinity }}
-        className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/10 rounded-full blur-[150px]"
+        className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-100/20 rounded-full blur-[150px]"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e3a8a05_1px,transparent_1px),linear-gradient(to_bottom,#1e3a8a05_1px,transparent_1px)] bg-[size:4rem_4rem]" />
 
       <div className={isMobile ? 'relative z-10 px-4' : 'container mx-auto px-6 lg:px-12 relative z-10 max-w-[1400px]'}>
         {/* Header */}
@@ -62,16 +59,16 @@ const ProcessSection = () => {
           transition={{ duration: 0.6 }}
           className={`text-center mx-auto ${isMobile ? 'mb-8' : 'mb-16 max-w-2xl'}`}
         >
-          <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 text-white text-sm font-semibold mb-4 border border-white/20">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-primary-50 text-primary-700 text-sm font-semibold mb-4 border border-primary-100">
             Come Funziona
           </span>
           <h2 
-            className="font-display font-bold text-white mb-4"
+            className="font-display font-bold text-neutral-900 mb-4"
             style={{ fontSize: isMobile ? 'clamp(24px, 6vw, 32px)' : 'clamp(32px, 4vw, 48px)' }}
           >
-            Da Noi è <span className="text-secondary-400">Semplice</span>
+            Da Noi è <span className="text-primary-600">Semplice</span>
           </h2>
-          <p className={`text-white/70 ${isMobile ? 'text-sm' : 'text-base lg:text-lg'}`}>
+          <p className={`text-neutral-600 ${isMobile ? 'text-sm' : 'text-base lg:text-lg'}`}>
             Un processo chiaro in 4 semplici passaggi.
           </p>
         </motion.div>
@@ -114,19 +111,19 @@ const ProcessSection = () => {
                   </div>
 
                   {/* Content card */}
-                  <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5">
+                  <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300">
                     <div className="flex items-start gap-4">
                       <div 
                         className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                         style={{
-                          background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+                          background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)',
                         }}
                       >
-                        <step.icon className="w-6 h-6 text-secondary-400" />
+                        <step.icon className="w-6 h-6 text-primary-600" />
                       </div>
                       <div>
-                        <h3 className="font-display font-bold text-white mb-1 text-base">{step.title}</h3>
-                        <p className="text-white/70 text-sm leading-relaxed">{step.description}</p>
+                        <h3 className="font-display font-bold text-neutral-900 mb-1 text-base">{step.title}</h3>
+                        <p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p>
                       </div>
                     </div>
                   </div>
@@ -135,9 +132,9 @@ const ProcessSection = () => {
                 // ← DESKTOP: Horizontal card layout
                 <motion.div
                   whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                  className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 text-center h-full hover:bg-white/15 transition-all duration-300"
+                  className="relative bg-white border border-neutral-200 rounded-2xl p-8 text-center h-full hover:shadow-xl hover:border-primary-200 transition-all duration-300 shadow-lg"
                 >
-                  {/* Number badge large con gradient blue→purple */}
+                  {/* Number badge large con gradient */}
                   <div 
                     className="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center font-display font-bold text-white text-xl"
                     style={{
@@ -152,21 +149,21 @@ const ProcessSection = () => {
                   <motion.div 
                     className="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-6 mt-4"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)',
                     }}
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <step.icon className="w-10 h-10 text-secondary-400" />
+                    <step.icon className="w-10 h-10 text-primary-600" />
                   </motion.div>
 
-                  <h3 className="text-xl font-display font-bold text-white mb-3">{step.title}</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">{step.description}</p>
+                  <h3 className="text-xl font-display font-bold text-neutral-900 mb-3">{step.title}</h3>
+                  <p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p>
 
                   {/* Arrow connector desktop only */}
                   {index < steps.length - 1 && (
                     <div className="hidden lg:block absolute top-1/2 -right-4 transform translate-x-full">
-                      <ArrowRight className="w-8 h-8 text-secondary-400/50" />
+                      <ArrowRight className="w-8 h-8 text-primary-300" />
                     </div>
                   )}
                 </motion.div>
@@ -184,8 +181,8 @@ const ProcessSection = () => {
         >
           <Link 
             to="/contatti"
-            className={`inline-flex items-center gap-2 bg-white text-primary-700 font-semibold rounded-xl shadow-lg hover:bg-neutral-50 transition-all duration-300 ${
-              isMobile ? 'w-full justify-center py-4 px-6' : 'px-8 py-4 hover:-translate-y-0.5'
+            className={`inline-flex items-center gap-2 bg-primary-600 text-white font-semibold rounded-xl shadow-lg shadow-primary-600/30 hover:bg-primary-700 hover:-translate-y-0.5 transition-all duration-300 ${
+              isMobile ? 'w-full justify-center py-4 px-6' : 'px-8 py-4'
             }`}
             style={{ minHeight: isMobile ? '56px' : 'auto' }}
           >
