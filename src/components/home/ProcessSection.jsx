@@ -1,175 +1,106 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { MessageSquare, FileSearch, CheckCircle, Handshake, ArrowRight } from 'lucide-react'
+import { Phone, Search, FileCheck, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import InteractiveBackground from '../InteractiveBackground'
-import { useState, useEffect } from 'react'
+import { PROCESS_STEPS } from '../../config/agency'
 
+// Sezione "Come Funziona" - 3 step semplici
 const ProcessSection = () => {
-  const [isMobile, setIsMobile] = useState(false)
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   })
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  const steps = [
-    { number: '01', icon: MessageSquare, title: 'Contattaci', description: 'Raccontaci le tue esigenze via form, telefono o WhatsApp.' },
-    { number: '02', icon: FileSearch, title: 'Analisi Gratuita', description: 'Confrontiamo le offerte delle migliori compagnie.' },
-    { number: '03', icon: CheckCircle, title: 'Preventivo', description: 'Ti presentiamo una proposta chiara e trasparente.' },
-    { number: '04', icon: Handshake, title: 'Attivazione', description: 'Attiviamo la polizza e ti seguiamo nel tempo.' },
-  ]
+  // Icons for each step
+  const stepIcons = [Phone, Search, FileCheck]
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    hidden: { opacity: 0, y: 40 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+    }
   }
 
   return (
-    <section 
-      ref={ref} 
-      className="relative overflow-hidden bg-white"
-      style={{ padding: isMobile ? 'clamp(4rem, 8vw, 6rem) 0' : '6rem 0' }}
-    >
-      {/* Background neutro */}
-      <div className="absolute inset-0 bg-gradient-to-b from-neutral-50 to-white" />
-      <motion.div
-        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
-        transition={{ duration: 15, repeat: Infinity }}
-        className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-100/20 rounded-full blur-[150px]"
-      />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e3a8a05_1px,transparent_1px),linear-gradient(to_bottom,#1e3a8a05_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-
-      <div className={isMobile ? 'relative z-10 px-4' : 'container mx-auto px-6 lg:px-12 relative z-10 max-w-[1400px]'}>
+    <section ref={ref} className="py-20 md:py-24 bg-white overflow-hidden">
+      <div className="container-custom">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className={`text-center mx-auto ${isMobile ? 'mb-8' : 'mb-16 max-w-2xl'}`}
+          className="text-center max-w-2xl mx-auto mb-16"
         >
           <span className="inline-block px-4 py-1.5 rounded-full bg-primary-50 text-primary-700 text-sm font-semibold mb-4 border border-primary-100">
             Come Funziona
           </span>
-          <h2 
-            className="font-display font-bold text-neutral-900 mb-4"
-            style={{ fontSize: isMobile ? 'clamp(24px, 6vw, 32px)' : 'clamp(32px, 4vw, 48px)' }}
-          >
-            Da Noi è <span className="text-primary-600">Semplice</span>
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-neutral-900 mb-4">
+            3 Semplici <span className="text-primary-600">Passi</span>
           </h2>
-          <p className={`text-neutral-600 ${isMobile ? 'text-sm' : 'text-base lg:text-lg'}`}>
-            Un processo chiaro in 4 semplici passaggi.
+          <p className="text-lg text-neutral-600">
+            Dalla prima chiamata alla polizza perfetta, ti accompagniamo in ogni fase.
           </p>
         </motion.div>
 
-        {/* ← TIMELINE LAYOUT: Horizontal desktop / Vertical mobile con linea blue */}
+        {/* Steps */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className={isMobile 
-            ? "relative space-y-6" 
-            : "grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
-          }
+          className="grid md:grid-cols-3 gap-8 lg:gap-12 relative"
         >
-          {/* Vertical timeline line mobile */}
-          {isMobile && (
-            <div 
-              className="absolute left-6 top-0 bottom-0 w-0.5 bg-secondary-400/30"
-              style={{ height: 'calc(100% - 2rem)' }}
-            />
-          )}
-          {steps.map((step, index) => (
-            <motion.div 
-              key={index} 
-              variants={itemVariants}
-              className={isMobile ? "relative pl-16" : ""}
-            >
-              {isMobile ? (
-                // ← MOBILE: Vertical timeline layout
-                <div className="relative">
-                  {/* Number badge large */}
-                  <div 
-                    className="absolute left-[-52px] top-0 w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-white text-lg"
-                    style={{
-                      background: 'linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)',
-                      boxShadow: '0 4px 12px rgba(245, 158, 11, 0.4)'
-                    }}
-                  >
-                    {step.number}
-                  </div>
+          {/* Connecting line (desktop only) */}
+          <div className="hidden md:block absolute top-20 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-primary-200 via-primary-400 to-primary-200" />
 
-                  {/* Content card */}
-                  <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300">
-                    <div className="flex items-start gap-4">
-                      <div 
-                        className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{
-                          background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)',
-                        }}
-                      >
-                        <step.icon className="w-6 h-6 text-primary-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-display font-bold text-neutral-900 mb-1 text-base">{step.title}</h3>
-                        <p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p>
-                      </div>
+          {PROCESS_STEPS.map((step, index) => {
+            const Icon = stepIcons[index]
+            return (
+              <motion.div
+                key={step.step}
+                variants={itemVariants}
+                className="relative"
+              >
+                <div className="text-center">
+                  {/* Step number + icon */}
+                  <div className="relative inline-flex items-center justify-center mb-6">
+                    {/* Background circle */}
+                    <div className="w-20 h-20 rounded-full bg-primary-50 flex items-center justify-center relative z-10">
+                      <Icon className="w-8 h-8 text-primary-600" />
+                    </div>
+                    {/* Step number badge */}
+                    <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary-600 text-white font-bold text-sm flex items-center justify-center shadow-lg z-20">
+                      {step.step}
                     </div>
                   </div>
+
+                  {/* Content */}
+                  <h3 className="text-xl font-display font-bold text-neutral-900 mb-3">
+                    {step.title}
+                  </h3>
+                  <p className="text-neutral-600 leading-relaxed max-w-xs mx-auto">
+                    {step.description}
+                  </p>
                 </div>
-              ) : (
-                // ← DESKTOP: Horizontal card layout
-                <motion.div
-                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                  className="relative bg-white border border-neutral-200 rounded-2xl p-8 text-center h-full hover:shadow-xl hover:border-primary-200 transition-all duration-300 shadow-lg"
-                >
-                  {/* Number badge large con gradient */}
-                  <div 
-                    className="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center font-display font-bold text-white text-xl"
-                    style={{
-                      background: 'linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)',
-                      boxShadow: '0 4px 16px rgba(245, 158, 11, 0.5)'
-                    }}
-                  >
-                    {step.number}
+
+                {/* Arrow connector (mobile only) */}
+                {index < PROCESS_STEPS.length - 1 && (
+                  <div className="md:hidden flex justify-center my-6">
+                    <ArrowRight className="w-6 h-6 text-primary-300 rotate-90" />
                   </div>
-
-                  {/* Icon */}
-                  <motion.div 
-                    className="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-6 mt-4"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)',
-                    }}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <step.icon className="w-10 h-10 text-primary-600" />
-                  </motion.div>
-
-                  <h3 className="text-xl font-display font-bold text-neutral-900 mb-3">{step.title}</h3>
-                  <p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p>
-
-                  {/* Arrow connector desktop only */}
-                  {index < steps.length - 1 && (
-                    <div className="hidden lg:block absolute top-1/2 -right-4 transform translate-x-full">
-                      <ArrowRight className="w-8 h-8 text-primary-300" />
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </motion.div>
-          ))}
+                )}
+              </motion.div>
+            )
+          })}
         </motion.div>
 
         {/* CTA */}
@@ -177,18 +108,24 @@ const ProcessSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className={`text-center ${isMobile ? 'mt-8' : 'mt-12'}`}
+          className="text-center mt-16"
         >
-          <Link 
-            to="/contatti"
-            className={`inline-flex items-center gap-2 bg-primary-600 text-white font-semibold rounded-xl shadow-lg shadow-primary-600/30 hover:bg-primary-700 hover:-translate-y-0.5 transition-all duration-300 ${
-              isMobile ? 'w-full justify-center py-4 px-6' : 'px-8 py-4'
-            }`}
-            style={{ minHeight: isMobile ? '56px' : 'auto' }}
-          >
-            Inizia Ora
-            <ArrowRight size={18} />
-          </Link>
+          <p className="text-neutral-600 mb-4">Pronto a iniziare?</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link 
+              to="/preventivo"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary-700 text-white font-semibold rounded-xl shadow-lg shadow-primary-700/30 hover:bg-primary-800 hover:-translate-y-0.5 transition-all duration-300"
+            >
+              Richiedi Preventivo Gratuito
+              <ArrowRight size={18} />
+            </Link>
+            <Link 
+              to="/contatti"
+              className="inline-flex items-center gap-2 px-6 py-4 bg-neutral-100 text-neutral-700 font-semibold rounded-xl hover:bg-neutral-200 transition-colors"
+            >
+              Contattaci
+            </Link>
+          </div>
         </motion.div>
       </div>
     </section>

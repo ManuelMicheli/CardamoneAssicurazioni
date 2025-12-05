@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage'
 import ServiziPage from './pages/ServiziPage'
 import ChiSiamoPage from './pages/ChiSiamoPage'
 import ContattiPage from './pages/ContattiPage'
+import PreventivoPage from './pages/PreventivoPage'
 import ScrollToTop from './components/ScrollToTop'
 import LoadingScreen from './components/LoadingScreen'
 import WhatsAppButton from './components/WhatsAppButton'
@@ -16,7 +17,7 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false)
-    }, 2000)
+    }, 1500)
     return () => clearTimeout(timer)
   }, [])
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/servizi" element={<ServiziPage />} />
             <Route path="/chi-siamo" element={<ChiSiamoPage />} />
             <Route path="/contatti" element={<ContattiPage />} />
+            <Route path="/preventivo" element={<PreventivoPage />} />
           </Routes>
         </main>
         <Footer />
@@ -45,4 +47,3 @@ function App() {
 }
 
 export default App
-

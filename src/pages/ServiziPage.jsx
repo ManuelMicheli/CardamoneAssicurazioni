@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
-import { Car, Home, Heart, Briefcase, PiggyBank, Umbrella, ArrowRight, CheckCircle, Shield } from 'lucide-react'
+import { Car, Home, Heart, Briefcase, ArrowRight, CheckCircle, Phone, MessageCircle, Shield } from 'lucide-react'
+import { AGENCY } from '../config/agency'
 
 const ServiziPage = () => {
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -9,40 +10,65 @@ const ServiziPage = () => {
 
   const services = [
     {
-      icon: Car, title: 'Auto e Moto', subtitle: 'Protezione veicoli',
-      description: 'RC Auto obbligatoria e garanzie accessorie. Confrontiamo le offerte delle migliori compagnie.',
-      features: ['RC Auto/Moto', 'Kasko', 'Furto e Incendio', 'Assistenza 24/7'],
-      image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&h=400&fit=crop',
+      id: 'auto-moto',
+      icon: Car,
+      title: 'Auto e Moto',
+      description: 'Protezione completa per i tuoi veicoli con le migliori tariffe del mercato.',
+      features: [
+        'RC Auto obbligatoria',
+        'Kasko e Minikasko',
+        'Furto e Incendio',
+        'Cristalli e Atti vandalici',
+        'Assistenza stradale 24/7',
+        'Tutela legale',
+      ],
+      benefits: 'Confrontiamo le offerte delle principali compagnie per trovare la tariffa più conveniente per il tuo profilo.',
+      popular: true,
     },
     {
-      icon: Home, title: 'Casa e Famiglia', subtitle: 'Sicurezza domestica',
-      description: 'Proteggi la tua casa e i tuoi cari con polizze complete.',
-      features: ['Incendio', 'Furto', 'RC Famiglia', 'Eventi Atmosferici'],
-      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop',
+      id: 'casa-famiglia',
+      icon: Home,
+      title: 'Casa e Famiglia',
+      description: 'Tutela la tua abitazione e proteggi i tuoi cari da imprevisti quotidiani.',
+      features: [
+        'Incendio e scoppio',
+        'Furto e rapina',
+        'Danni da acqua',
+        'Eventi atmosferici',
+        'Responsabilità civile famiglia',
+        'Tutela legale famiglia',
+      ],
+      benefits: 'Polizze modulari che si adattano alle tue esigenze, dalla casa in affitto alla villa di proprietà.',
     },
     {
-      icon: Heart, title: 'Salute e Benessere', subtitle: 'Cure senza pensieri',
-      description: 'Accesso alle migliori cure private senza liste di attesa.',
-      features: ['Rimborso Spese', 'Ricovero', 'Visite', 'Check-up'],
-      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=400&fit=crop',
+      id: 'vita-infortuni-salute',
+      icon: Heart,
+      title: 'Vita, Infortuni e Salute',
+      description: 'Proteggi te stesso e il futuro dei tuoi cari con coperture su misura.',
+      features: [
+        'Polizza vita caso morte',
+        'Infortuni professionali e non',
+        'Invalidità permanente',
+        'Rimborso spese mediche',
+        'Diaria da ricovero',
+        'Copertura malattie gravi',
+      ],
+      benefits: 'Soluzioni pensate per ogni fase della vita, dalla giovane famiglia alla pianificazione della pensione.',
     },
     {
-      icon: Briefcase, title: 'Business', subtitle: 'Protezione aziendale',
-      description: 'Soluzioni su misura per imprese e professionisti.',
-      features: ['RC Professionale', 'D&O', 'Cyber Risk', 'Infortuni'],
-      image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&h=400&fit=crop',
-    },
-    {
-      icon: PiggyBank, title: 'Investimenti', subtitle: 'Crescita capitale',
-      description: 'Piani di accumulo e investimento personalizzati.',
-      features: ['PAC', 'Unit Linked', 'Fondi Pensione', 'Gestioni'],
-      image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=400&fit=crop',
-    },
-    {
-      icon: Umbrella, title: 'Vita e Pensioni', subtitle: 'Serenità futura',
-      description: 'Proteggi chi ami e pianifica la pensione.',
-      features: ['TCM', 'Polizza Vita', 'LTC', 'Previdenza'],
-      image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop',
+      id: 'business',
+      icon: Briefcase,
+      title: 'Business e Professionisti',
+      description: 'Protezione completa per la tua attività professionale e imprenditoriale.',
+      features: [
+        'RC Professionale',
+        'Multirischi attività commerciali',
+        'RC artigiani e commercianti',
+        'D&O (Responsabilità amministratori)',
+        'Cyber risk',
+        'Merci trasportate',
+      ],
+      benefits: 'Dal libero professionista alla PMI, soluzioni su misura per proteggere il tuo lavoro.',
     },
   ]
 
@@ -52,17 +78,17 @@ const ServiziPage = () => {
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
   }
 
   return (
     <>
       {/* Hero */}
-      <section ref={heroRef} className="relative pt-32 pb-20 overflow-hidden">
+      <section ref={heroRef} className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-white via-primary-50/30 to-white" />
         <motion.div
-          animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+          animate={{ x: [0, 30, 0] }}
           transition={{ duration: 20, repeat: Infinity }}
           className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-100/40 rounded-full blur-[120px]"
         />
@@ -77,68 +103,130 @@ const ServiziPage = () => {
             <span className="inline-block px-4 py-1.5 rounded-full bg-primary-50 text-primary-700 text-sm font-semibold mb-6 border border-primary-100">
               I Nostri Servizi
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-neutral-900 mb-6">
-              Soluzioni <span className="text-primary-600">Complete</span>
+            <h1 className="text-4xl sm:text-5xl font-display font-bold text-neutral-900 mb-6">
+              Soluzioni Assicurative <span className="text-primary-600">Complete</span>
             </h1>
-            <p className="text-xl text-neutral-600">
-              Una gamma completa di prodotti assicurativi delle migliori compagnie.
+            <p className="text-xl text-neutral-600 mb-6">
+              Analizziamo le tue esigenze, confrontiamo le offerte delle migliori compagnie e ti proponiamo 
+              la soluzione più adatta a te. Con assistenza dedicata in caso di sinistro.
             </p>
+            
+            {/* Key benefits */}
+            <div className="flex flex-wrap gap-4 mb-8">
+              {['Preventivi gratuiti', 'Consulenza personalizzata', 'Assistenza sinistri'].map((benefit, index) => (
+                <div key={index} className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-neutral-100 shadow-sm">
+                  <CheckCircle size={16} className="text-primary-600" />
+                  <span className="text-sm font-medium text-neutral-700">{benefit}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap gap-4">
+              <Link 
+                to="/preventivo"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 text-white font-semibold rounded-xl hover:bg-primary-800 transition-colors"
+              >
+                Richiedi Preventivo Gratuito
+                <ArrowRight size={16} />
+              </Link>
+              <a 
+                href={`tel:${AGENCY.phone.fissoClean}`}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-neutral-100 text-neutral-700 font-semibold rounded-xl hover:bg-neutral-200 transition-colors"
+              >
+                <Phone size={16} />
+                Chiamaci
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Services */}
-      <section ref={servicesRef} className="py-24 bg-white">
+      {/* Services Detail */}
+      <section ref={servicesRef} className="py-24 bg-neutral-50">
         <div className="container-custom">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={servicesInView ? "visible" : "hidden"}
-            className="space-y-16"
+            className="space-y-12"
           >
             {services.map((service, index) => (
-              <motion.div key={index} variants={itemVariants}>
-                <div className={`grid lg:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
-                  <motion.div 
-                    className={index % 2 === 1 ? 'lg:order-2' : ''}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="relative group">
-                      <div className="absolute -inset-4 bg-gradient-to-br from-primary-100 to-secondary-100/50 rounded-3xl opacity-50 group-hover:opacity-70 transition-opacity" />
-                      <img
-                        src={service.image}
-                        alt={service.title}
-                        className="relative rounded-2xl shadow-xl w-full h-80 object-cover"
-                      />
+              <motion.div
+                key={service.id}
+                id={service.id}
+                variants={itemVariants}
+                className="bg-white rounded-3xl shadow-lg border border-neutral-100 overflow-hidden"
+              >
+                <div className="grid lg:grid-cols-3 gap-0">
+                  {/* Left Column - Icon & Title */}
+                  <div className="p-8 lg:p-10 bg-gradient-to-br from-primary-50 to-white border-b lg:border-b-0 lg:border-r border-neutral-100">
+                    <div className="flex items-start gap-4">
+                      <div className="w-16 h-16 rounded-2xl bg-primary-100 flex items-center justify-center flex-shrink-0">
+                        <service.icon className="w-8 h-8 text-primary-600" />
+                      </div>
+                      <div>
+                        {service.popular && (
+                          <span className="inline-block px-2 py-0.5 bg-secondary-500 text-white text-xs font-bold rounded-full mb-2">
+                            Più richiesto
+                          </span>
+                        )}
+                        <h2 className="text-2xl font-display font-bold text-neutral-900 mb-2">
+                          {service.title}
+                        </h2>
+                        <p className="text-neutral-600">
+                          {service.description}
+                        </p>
+                      </div>
                     </div>
-                  </motion.div>
 
-                  <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
-                    <div className="w-14 h-14 rounded-xl bg-primary-50 flex items-center justify-center mb-6">
-                      <service.icon className="w-7 h-7 text-primary-600" />
+                    {/* CTA for this service */}
+                    <div className="mt-8">
+                      <Link 
+                        to="/preventivo"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-700 text-white text-sm font-semibold rounded-xl hover:bg-primary-800 transition-colors"
+                      >
+                        Richiedi Preventivo
+                        <ArrowRight size={14} />
+                      </Link>
                     </div>
-                    
-                    <h2 className="text-3xl font-display font-bold text-neutral-900 mb-2">{service.title}</h2>
-                    <p className="text-primary-600 font-medium mb-4">{service.subtitle}</p>
-                    <p className="text-neutral-600 mb-6">{service.description}</p>
+                  </div>
 
-                    <div className="grid grid-cols-2 gap-3 mb-8">
-                      {service.features.map((feature, i) => (
-                        <div key={i} className="flex items-center gap-2">
-                          <CheckCircle size={16} className="text-primary-600" />
-                          <span className="text-neutral-700 text-sm">{feature}</span>
-                        </div>
+                  {/* Middle Column - Features */}
+                  <div className="p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-neutral-100">
+                    <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-4">
+                      Coperture disponibili
+                    </h3>
+                    <ul className="space-y-3">
+                      {service.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <CheckCircle size={18} className="text-primary-600 flex-shrink-0 mt-0.5" />
+                          <span className="text-neutral-700">{feature}</span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
+                  </div>
 
-                    <Link 
-                      to="/contatti" 
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors"
-                    >
-                      Richiedi Preventivo
-                      <ArrowRight size={18} />
-                    </Link>
+                  {/* Right Column - Benefits */}
+                  <div className="p-8 lg:p-10 bg-neutral-50">
+                    <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-4">
+                      Il nostro approccio
+                    </h3>
+                    <p className="text-neutral-600 leading-relaxed mb-6">
+                      {service.benefits}
+                    </p>
+                    
+                    <div className="p-4 bg-white rounded-xl border border-neutral-100">
+                      <p className="text-sm text-neutral-600 mb-2">Hai domande su {service.title.toLowerCase()}?</p>
+                      <a 
+                        href={AGENCY.whatsapp.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-green-600 hover:text-green-700"
+                      >
+                        <MessageCircle size={16} />
+                        Scrivici su WhatsApp
+                      </a>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -147,26 +235,39 @@ const ServiziPage = () => {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 bg-primary-600">
-        <div className="container-custom text-center">
+      {/* Bottom CTA */}
+      <section className="py-24 bg-white">
+        <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            className="bg-gradient-to-br from-primary-700 to-primary-900 rounded-3xl shadow-xl p-8 lg:p-12 text-center max-w-4xl mx-auto"
           >
-            <Shield className="w-16 h-16 text-secondary-400 mx-auto mb-6" />
-            <h2 className="text-3xl sm:text-4xl font-display font-bold text-white mb-4">
-              Non Sai Quale Polizza Scegliere?
+            <Shield className="w-16 h-16 text-white/80 mx-auto mb-6" />
+            <h2 className="text-3xl font-display font-bold text-white mb-4">
+              Non Trovi Quello Che Cerchi?
             </h2>
             <p className="text-white/70 mb-8 max-w-xl mx-auto">
-              I nostri consulenti sono a disposizione per una consulenza gratuita.
+              Offriamo molte altre soluzioni assicurative. Contattaci per una consulenza gratuita 
+              e ti aiuteremo a trovare la protezione perfetta per le tue esigenze.
             </p>
-            <Link to="/contatti" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary-700 font-semibold rounded-xl hover:bg-neutral-50 transition-colors">
-              Prenota Consulenza
-              <ArrowRight size={18} />
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link 
+                to="/contatti" 
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-primary-700 font-semibold rounded-xl hover:bg-neutral-100 transition-colors"
+              >
+                Contattaci
+                <ArrowRight size={18} />
+              </Link>
+              <a 
+                href={`tel:${AGENCY.phone.fissoClean}`}
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
+              >
+                <Phone size={18} />
+                {AGENCY.phone.fisso}
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>

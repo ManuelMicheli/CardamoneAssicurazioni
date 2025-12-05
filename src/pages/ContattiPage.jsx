@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle, MessageCircle } from 'lucide-react'
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, MessageCircle, ExternalLink } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { AGENCY } from '../config/agency'
 
 const ContattiPage = () => {
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -14,13 +16,13 @@ const ContattiPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [errors, setErrors] = useState({})
 
-  const services = ['Auto e Moto', 'Casa e Famiglia', 'Salute', 'Business', 'Investimenti', 'Vita e Pensioni', 'Altro']
+  const services = ['Auto e Moto', 'Casa e Famiglia', 'Vita, Infortuni e Salute', 'Business', 'Altro']
 
   const contactInfo = [
-    { icon: Phone, title: 'Telefono', value: '+39 000 000 0000', href: 'tel:+390000000000' },
-    { icon: Mail, title: 'Email', value: 'info@cardamone.it', href: 'mailto:info@cardamoneassicurazioni.it' },
-    { icon: MessageCircle, title: 'WhatsApp', value: 'Scrivici', href: 'https://wa.me/390000000000' },
-    { icon: MapPin, title: 'Sede', value: 'Via Roma, 123', href: 'https://maps.google.com' },
+    { icon: Phone, title: 'Telefono Ufficio', value: AGENCY.phone.fisso, href: `tel:${AGENCY.phone.fissoClean}`, color: 'primary' },
+    { icon: MessageCircle, title: 'WhatsApp', value: AGENCY.phone.mobile, href: AGENCY.whatsapp.link, color: 'green' },
+    { icon: MapPin, title: 'Sede', value: AGENCY.address.street, subvalue: `${AGENCY.address.cap} ${AGENCY.address.city}`, href: AGENCY.address.googleMapsLink, color: 'secondary' },
+    { icon: Clock, title: 'Orari', value: AGENCY.hours.weekdays, subvalue: `Sab: ${AGENCY.hours.saturday}`, color: 'neutral' },
   ]
 
   const handleChange = (e) => {
@@ -52,11 +54,11 @@ const ContattiPage = () => {
 
   if (isSubmitted) {
     return (
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-primary-50/30 to-white">
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-primary-50/30 to-white pt-[70px] lg:pt-0">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="max-w-lg mx-auto text-center bg-white rounded-3xl shadow-xl p-12 border border-neutral-100"
+          className="max-w-lg mx-auto text-center bg-white rounded-3xl shadow-xl p-12 border border-neutral-100 m-4"
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -67,13 +69,18 @@ const ContattiPage = () => {
             <CheckCircle className="w-10 h-10 text-primary-600" />
           </motion.div>
           <h2 className="text-3xl font-display font-bold text-neutral-900 mb-4">Messaggio Inviato!</h2>
-          <p className="text-neutral-600 mb-8">Ti risponderemo entro 24 ore.</p>
-          <button
-            onClick={() => { setIsSubmitted(false); setFormData({ name: '', email: '', phone: '', service: '', message: '', privacy: false }) }}
-            className="px-8 py-4 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors"
-          >
-            Invia un altro messaggio
-          </button>
+          <p className="text-neutral-600 mb-8">Ti risponderemo entro 24 ore lavorative.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => { setIsSubmitted(false); setFormData({ name: '', email: '', phone: '', service: '', message: '', privacy: false }) }}
+              className="px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors"
+            >
+              Invia un altro messaggio
+            </button>
+            <Link to="/" className="px-6 py-3 bg-neutral-100 text-neutral-700 font-semibold rounded-xl hover:bg-neutral-200 transition-colors">
+              Torna alla Home
+            </Link>
+          </div>
         </motion.div>
       </section>
     )
@@ -103,8 +110,11 @@ const ContattiPage = () => {
             <h1 className="text-4xl sm:text-5xl font-display font-bold text-neutral-900 mb-6">
               Siamo Qui <span className="text-primary-600">Per Te</span>
             </h1>
-            <p className="text-xl text-neutral-600">
+            <p className="text-xl text-neutral-600 mb-4">
               Contattaci come preferisci. Rispondiamo sempre entro 24 ore.
+            </p>
+            <p className="text-neutral-500">
+              {AGENCY.address.full}
             </p>
           </motion.div>
         </div>
@@ -118,7 +128,8 @@ const ContattiPage = () => {
               <motion.a
                 key={index}
                 href={info.href}
-                target={info.href.startsWith('http') ? '_blank' : undefined}
+                target={info.href?.startsWith('http') ? '_blank' : undefined}
+                rel={info.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -126,11 +137,20 @@ const ContattiPage = () => {
                 whileHover={{ y: -4 }}
                 className="block bg-white rounded-2xl shadow-lg p-6 border border-neutral-100 hover:border-primary-200 hover:shadow-xl transition-all duration-300"
               >
-                <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mb-4">
-                  <info.icon className="w-6 h-6 text-primary-600" />
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
+                  info.color === 'green' ? 'bg-green-50' : 
+                  info.color === 'secondary' ? 'bg-secondary-50' : 
+                  info.color === 'neutral' ? 'bg-neutral-100' : 'bg-primary-50'
+                }`}>
+                  <info.icon className={`w-6 h-6 ${
+                    info.color === 'green' ? 'text-green-600' : 
+                    info.color === 'secondary' ? 'text-secondary-600' : 
+                    info.color === 'neutral' ? 'text-neutral-600' : 'text-primary-600'
+                  }`} />
                 </div>
                 <h3 className="font-semibold text-neutral-900 mb-1">{info.title}</h3>
                 <p className="text-primary-600 font-medium">{info.value}</p>
+                {info.subvalue && <p className="text-neutral-500 text-sm">{info.subvalue}</p>}
               </motion.a>
             ))}
           </div>
@@ -148,7 +168,8 @@ const ContattiPage = () => {
               transition={{ duration: 0.6 }}
             >
               <div className="bg-white rounded-3xl shadow-xl p-8 border border-neutral-100">
-                <h2 className="text-2xl font-display font-bold text-neutral-900 mb-6">Richiedi Preventivo</h2>
+                <h2 className="text-2xl font-display font-bold text-neutral-900 mb-2">Richiedi Informazioni</h2>
+                <p className="text-neutral-600 mb-6">Compila il form e ti ricontatteremo entro 24 ore.</p>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
@@ -183,23 +204,23 @@ const ContattiPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-neutral-700 mb-2">Servizio *</label>
+                    <label className="block text-sm font-medium text-neutral-700 mb-2">Di cosa hai bisogno? *</label>
                     <select
                       name="service" value={formData.service} onChange={handleChange}
                       className={`w-full px-4 py-3 rounded-xl border ${errors.service ? 'border-red-300 bg-red-50' : 'border-neutral-200'} focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors`}
                     >
-                      <option value="">Seleziona</option>
+                      <option value="">Seleziona una categoria</option>
                       {services.map((s) => <option key={s} value={s}>{s}</option>)}
                     </select>
                     {errors.service && <p className="mt-1 text-sm text-red-500">{errors.service}</p>}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-neutral-700 mb-2">Messaggio</label>
+                    <label className="block text-sm font-medium text-neutral-700 mb-2">Messaggio (opzionale)</label>
                     <textarea
                       name="message" value={formData.message} onChange={handleChange} rows={4}
                       className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors resize-none"
-                      placeholder="Descrivi le tue esigenze..."
+                      placeholder="Descrivi brevemente le tue esigenze..."
                     />
                   </div>
 
@@ -210,7 +231,7 @@ const ContattiPage = () => {
                         className="mt-1 w-5 h-5 rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
                       />
                       <span className="text-sm text-neutral-600">
-                        Accetto la <a href="#" className="text-primary-600 hover:underline">Privacy Policy</a> *
+                        Accetto la <Link to="/privacy" className="text-primary-600 hover:underline">Privacy Policy</Link> e acconsento al trattamento dei miei dati. *
                       </span>
                     </label>
                     {errors.privacy && <p className="mt-1 text-sm text-red-500">{errors.privacy}</p>}
@@ -222,60 +243,78 @@ const ContattiPage = () => {
                     whileTap={{ scale: 0.98 }}
                     className="w-full py-4 bg-primary-600 text-white font-semibold rounded-xl shadow-lg shadow-primary-600/30 hover:bg-primary-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
                   >
-                    {isSubmitting ? 'Invio...' : <><Send size={18} /> Invia Richiesta</>}
+                    {isSubmitting ? 'Invio in corso...' : <><Send size={18} /> Invia Richiesta</>}
                   </motion.button>
                 </form>
               </div>
             </motion.div>
 
-            {/* Info */}
+            {/* Info Sidebar */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={formInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="space-y-6"
             >
+              {/* Hours Card */}
               <div className="bg-white rounded-2xl shadow-lg p-6 border border-neutral-100">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 rounded-xl bg-secondary-100 flex items-center justify-center">
                     <Clock className="w-6 h-6 text-secondary-600" />
                   </div>
-                  <h3 className="text-xl font-display font-bold text-neutral-900">Orari</h3>
+                  <h3 className="text-xl font-display font-bold text-neutral-900">Orari di Apertura</h3>
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between py-3 border-b border-neutral-100">
                     <span className="text-neutral-600">Lunedì - Venerdì</span>
-                    <span className="font-semibold text-neutral-900">9:00 - 18:00</span>
+                    <span className="font-semibold text-neutral-900">{AGENCY.hours.weekdays}</span>
                   </div>
                   <div className="flex justify-between py-3 border-b border-neutral-100">
                     <span className="text-neutral-600">Sabato</span>
-                    <span className="font-semibold text-neutral-900">9:00 - 12:00</span>
+                    <span className="font-semibold text-neutral-900">{AGENCY.hours.saturday}</span>
                   </div>
                   <div className="flex justify-between py-3">
                     <span className="text-neutral-600">Domenica</span>
-                    <span className="text-neutral-500">Chiuso</span>
+                    <span className="text-neutral-500">{AGENCY.hours.sunday}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-primary-600 rounded-2xl p-6 text-white">
-                <h3 className="text-xl font-display font-bold mb-4">Assistenza Urgente?</h3>
-                <p className="text-white/70 mb-6">Per sinistri o emergenze, contattaci subito.</p>
-                <a href="tel:+390000000000" className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-xl hover:bg-white/20 transition-colors">
-                  <Phone size={18} className="text-secondary-400" />
-                  <span>+39 000 000 0000</span>
-                </a>
+              {/* Quick Contact Card */}
+              <div className="bg-primary-700 rounded-2xl p-6 text-white">
+                <h3 className="text-xl font-display font-bold mb-2">Preferisci parlare direttamente?</h3>
+                <p className="text-white/70 mb-6">Chiamaci o scrivici su WhatsApp per una risposta immediata.</p>
+                <div className="space-y-3">
+                  <a href={`tel:${AGENCY.phone.fissoClean}`} className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-xl hover:bg-white/20 transition-colors">
+                    <Phone size={18} className="text-secondary-400" />
+                    <span>{AGENCY.phone.fisso}</span>
+                  </a>
+                  <a href={AGENCY.whatsapp.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-4 py-3 bg-green-600/30 rounded-xl hover:bg-green-600/40 transition-colors">
+                    <MessageCircle size={18} className="text-green-400" />
+                    <span>Scrivi su WhatsApp</span>
+                  </a>
+                </div>
               </div>
 
+              {/* Map Card */}
               <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-neutral-100">
                 <div className="p-4">
                   <h3 className="font-display font-bold text-neutral-900 mb-1">Dove Trovarci</h3>
-                  <p className="text-neutral-600 text-sm">Via Roma, 123 - 00100 Città</p>
+                  <p className="text-neutral-600 text-sm">{AGENCY.address.full}</p>
+                  <a 
+                    href={AGENCY.address.googleMapsLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 mt-2"
+                  >
+                    Apri in Google Maps <ExternalLink size={12} />
+                  </a>
                 </div>
                 <div className="h-48 bg-neutral-100">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2969.6544!2d12.4963655!3d41.9027835"
+                    src={AGENCY.address.googleMapsEmbed}
                     width="100%" height="100%" style={{ border: 0 }} loading="lazy"
+                    title="Mappa Cardamone Assicurazioni"
                   />
                 </div>
               </div>

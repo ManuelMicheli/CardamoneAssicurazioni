@@ -1,10 +1,14 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { MessageCircle } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { AGENCY } from '../config/agency'
 
 const WhatsAppButton = () => {
   const [isMobile, setIsMobile] = useState(false)
   const prefersReducedMotion = useReducedMotion()
+
+  // WhatsApp link with pre-filled message
+  const whatsappLink = `${AGENCY.whatsapp.link}?text=${encodeURIComponent('Ciao, vorrei informazioni sui vostri servizi assicurativi')}`
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768)
@@ -13,11 +17,11 @@ const WhatsAppButton = () => {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Mobile: larger touch target, positioned with safe area
+  // Mobile: larger touch target
   if (isMobile) {
     return (
       <motion.a
-        href="https://wa.me/390000000000?text=Ciao,%20vorrei%20informazioni%20sui%20vostri%20servizi%20assicurativi"
+        href={whatsappLink}
         target="_blank"
         rel="noopener noreferrer"
         initial={{ scale: 0, opacity: 0 }}
@@ -37,7 +41,7 @@ const WhatsAppButton = () => {
       >
         <MessageCircle className="w-7 h-7 text-white fill-white" />
         
-        {/* Pulse Effect - Mobile optimized */}
+        {/* Pulse Effect */}
         {!prefersReducedMotion && (
           <span 
             className="absolute inset-0 rounded-full bg-green-500"
@@ -51,10 +55,10 @@ const WhatsAppButton = () => {
     )
   }
 
-  // Desktop: original design
+  // Desktop
   return (
     <motion.a
-      href="https://wa.me/390000000000?text=Ciao,%20vorrei%20informazioni%20sui%20vostri%20servizi%20assicurativi"
+      href={whatsappLink}
       target="_blank"
       rel="noopener noreferrer"
       initial={{ scale: 0 }}
@@ -76,4 +80,3 @@ const WhatsAppButton = () => {
 }
 
 export default WhatsAppButton
-

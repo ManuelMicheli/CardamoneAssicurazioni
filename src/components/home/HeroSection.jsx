@@ -1,7 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Shield, Star, Phone, CheckCircle, ChevronDown, Users, Calendar, Award, Quote } from 'lucide-react'
+import { ArrowRight, Shield, Star, Phone, CheckCircle, ChevronDown, MessageCircle, MapPin, Award } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { AGENCY, BENEFITS } from '../../config/agency'
 
 const HeroSection = () => {
   const [isMobile, setIsMobile] = useState(false)
@@ -18,35 +19,13 @@ const HeroSection = () => {
     return () => window.removeEventListener('resize', checkScreen)
   }, [])
 
-  // ← NUOVO: Stats con icone per inline stats cards
-  const statsWithIcons = [
-    { icon: Users, value: '2.500+', label: 'Clienti Soddisfatti' },
-    { icon: Star, value: '4.9/5', label: 'Rating Google' },
-    { icon: Calendar, value: '15+', label: 'Anni Esperienza' },
-  ]
-
-  const stats = [
-    { value: '2.500+', label: 'Clienti' },
-    { value: '15+', label: 'Anni' },
-    { value: '98%', label: 'Rinnovi' },
-    { value: '4.9', label: 'Rating' },
-  ]
-
-  const benefits = [
+  // Hero benefits - focused on local value
+  const heroBenefits = [
     'Preventivi gratuiti in 24h',
-    'Consulenza personalizzata',
     'Assistenza sinistri dedicata',
-    'Migliori tariffe garantite',
+    'Consulenza personalizzata',
+    'Le migliori compagnie',
   ]
-
-  // ← NUOVO: Testimonianza per floating card
-  const featuredTestimonial = {
-    name: 'Laura Bianchi',
-    role: 'Libera Professionista',
-    image: 'https://randomuser.me/api/portraits/women/44.jpg',
-    text: 'Finalmente un\'agenzia che ascolta. Risposta rapida, preventivi chiari e assistenza impeccabile.',
-    rating: 4.9
-  }
 
   // Mobile-optimized animation variants
   const mobileVariants = {
@@ -55,10 +34,7 @@ const HeroSection = () => {
       opacity: 1, 
       y: 0, 
       scale: 1,
-      transition: { 
-        duration: 0.4, 
-        ease: [0.22, 1, 0.36, 1] 
-      }
+      transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
     }
   }
 
@@ -66,23 +42,20 @@ const HeroSection = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1
-      }
+      transition: { staggerChildren: 0.08, delayChildren: 0.1 }
     }
   }
 
   // ================================================
-  // MOBILE HERO (≤768px) - Premium Dark Design
+  // MOBILE HERO (≤768px) - Lead-focused design
   // ================================================
   if (isMobile) {
     return (
       <section className="relative min-h-screen min-h-[100dvh] flex flex-col justify-center overflow-hidden pt-[70px]">
-        {/* Mobile Premium Background - Navy to Indigo gradient */}
+        {/* Mobile Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-primary-900 to-indigo-950" />
         
-        {/* Subtle shimmer effect */}
+        {/* Shimmer effect */}
         <div 
           className="absolute inset-0 opacity-60"
           style={{
@@ -92,7 +65,7 @@ const HeroSection = () => {
           }}
         />
         
-        {/* Geometric pattern overlay */}
+        {/* Pattern overlay */}
         <div 
           className="absolute inset-0 opacity-40"
           style={{
@@ -100,12 +73,10 @@ const HeroSection = () => {
           }}
         />
 
-        {/* Ambient glow orb */}
+        {/* Ambient glow */}
         <div 
           className="absolute top-1/4 -right-20 w-80 h-80 rounded-full blur-[100px]"
-          style={{
-            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)'
-          }}
+          style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)' }}
         />
 
         {/* Content */}
@@ -114,37 +85,39 @@ const HeroSection = () => {
           initial="hidden"
           animate="visible"
           className="relative z-10 px-4 py-8 flex flex-col items-center text-center"
-          style={{ willChange: 'transform, opacity' }}
         >
-          {/* Rating Badge */}
-          <motion.div 
-            variants={mobileVariants}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 mb-6"
-          >
-            <div className="flex gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={12} className="fill-secondary-400 text-secondary-400" />
-              ))}
+          {/* Location + Rating Badge */}
+          <motion.div variants={mobileVariants} className="flex flex-col items-center gap-2 mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10">
+              <MapPin size={12} className="text-secondary-500" />
+              <span className="text-white/80 text-xs font-medium">{AGENCY.serviceArea}</span>
             </div>
-            <span className="text-white/90 text-sm font-semibold">4.9/5</span>
-            <span className="text-white/50 text-sm">Google</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10">
+              <div className="flex gap-0.5">
+                {[...Array(AGENCY.reviews.rating)].map((_, i) => (
+                  <Star key={i} size={12} className="fill-secondary-500 text-secondary-500" />
+                ))}
+              </div>
+              <span className="text-white/90 text-sm font-semibold">{AGENCY.reviews.rating}/5</span>
+              <span className="text-white/50 text-xs">({AGENCY.reviews.count} recensioni)</span>
+            </div>
           </motion.div>
 
-          {/* Main Headline - Mobile optimized typography */}
+          {/* Main Headline - Local Value */}
           <motion.h1 
             variants={mobileVariants}
             className="font-display font-bold text-white leading-[1.1] tracking-tight mb-4"
-            style={{ fontSize: 'clamp(32px, 9vw, 40px)' }}
+            style={{ fontSize: 'clamp(28px, 8vw, 36px)' }}
           >
-            La Tua
-            <span className="block text-primary-400">Protezione</span>
+            Il Tuo Assicuratore
+            <span className="block text-primary-400">di Fiducia</span>
             <span className="relative inline-block">
-              su Misura
+              a {AGENCY.address.city}
               <span 
                 className="absolute -bottom-1 left-0 w-full h-1 rounded-full"
                 style={{
-                  background: 'linear-gradient(90deg, #f59e0b, #fbbf24)',
-                  boxShadow: '0 2px 12px rgba(245, 158, 11, 0.4)'
+                  background: 'linear-gradient(90deg, #d97706, #f59e0b)',
+                  boxShadow: '0 2px 12px rgba(217, 119, 6, 0.4)'
                 }}
               />
             </span>
@@ -154,18 +127,15 @@ const HeroSection = () => {
           <motion.p 
             variants={mobileVariants}
             className="text-white/70 leading-relaxed max-w-sm mb-6"
-            style={{ fontSize: 'clamp(15px, 4vw, 17px)' }}
+            style={{ fontSize: 'clamp(14px, 3.5vw, 16px)' }}
           >
-            Da oltre <strong className="text-white">15 anni</strong> siamo il punto di riferimento. 
-            Soluzioni assicurative <strong className="text-white">personalizzate</strong> per te.
+            Da oltre <strong className="text-white">{AGENCY.experience.years} anni</strong> al servizio di famiglie e imprese. 
+            Confrontiamo le <strong className="text-white">migliori compagnie</strong> per trovare la polizza perfetta per te.
           </motion.p>
 
-          {/* Benefits - 2x2 grid for mobile */}
-          <motion.div 
-            variants={mobileVariants}
-            className="grid grid-cols-2 gap-3 mb-8 w-full max-w-sm"
-          >
-            {benefits.map((benefit, index) => (
+          {/* Benefits - 2x2 grid */}
+          <motion.div variants={mobileVariants} className="grid grid-cols-2 gap-3 mb-8 w-full max-w-sm">
+            {heroBenefits.map((benefit, index) => (
               <motion.div 
                 key={index}
                 variants={mobileVariants}
@@ -177,31 +147,27 @@ const HeroSection = () => {
             ))}
           </motion.div>
 
-          {/* CTA Buttons - Mobile Premium */}
-          <motion.div 
-            variants={mobileVariants}
-            className="flex flex-col gap-3 w-full max-w-sm mb-8"
-          >
-            {/* Primary CTA with pulse animation */}
+          {/* CTA Buttons - Lead focused */}
+          <motion.div variants={mobileVariants} className="flex flex-col gap-3 w-full max-w-sm mb-6">
+            {/* Primary CTA */}
             <Link 
-              to="/contatti" 
+              to="/preventivo" 
               className="group flex items-center justify-center gap-2 w-full py-4 px-6 rounded-2xl font-bold text-base text-white
-                bg-gradient-to-r from-primary-500 to-primary-600
-                shadow-lg shadow-primary-500/30
+                bg-gradient-to-r from-primary-600 to-primary-700
+                shadow-lg shadow-primary-600/30
                 active:scale-[0.98] transition-transform"
               style={{
                 minHeight: '60px',
                 animation: prefersReducedMotion ? 'none' : 'mobilePulse 2.5s ease-in-out infinite',
-                willChange: 'transform, box-shadow'
               }}
             >
               Richiedi Preventivo Gratuito
               <ArrowRight size={18} className="group-active:translate-x-1 transition-transform" />
             </Link>
 
-            {/* Secondary CTA */}
+            {/* Phone CTA */}
             <a 
-              href="tel:+390000000000" 
+              href={`tel:${AGENCY.phone.fissoClean}`}
               className="flex items-center justify-center gap-2 w-full py-3.5 px-6 rounded-2xl font-semibold text-sm
                 text-white bg-white/10 backdrop-blur-sm border border-white/20
                 active:bg-white/20 transition-colors"
@@ -210,23 +176,41 @@ const HeroSection = () => {
               <Phone size={18} />
               Chiama Ora
             </a>
+
+            {/* WhatsApp CTA */}
+            <a 
+              href={AGENCY.whatsapp.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-2xl font-semibold text-sm
+                text-white bg-green-600/20 border border-green-500/30
+                active:bg-green-600/30 transition-colors"
+            >
+              <MessageCircle size={18} className="text-green-400" />
+              Scrivici su WhatsApp
+            </a>
           </motion.div>
 
-          {/* Stats Row - Mobile optimized */}
-          <motion.div 
-            variants={mobileVariants}
-            className="flex items-center justify-center gap-6 pt-6 border-t border-white/10 w-full max-w-sm"
-          >
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <p className="text-xl font-display font-bold text-primary-400">{stat.value}</p>
-                <p className="text-[10px] text-white/50 uppercase tracking-wider">{stat.label}</p>
-              </div>
-            ))}
+          {/* Trust badges */}
+          <motion.div variants={mobileVariants} className="flex items-center justify-center gap-4 pt-4 border-t border-white/10 w-full max-w-sm">
+            <div className="text-center">
+              <p className="text-lg font-display font-bold text-primary-400">{AGENCY.experience.years}+</p>
+              <p className="text-[10px] text-white/50 uppercase tracking-wider">Anni</p>
+            </div>
+            <div className="w-px h-8 bg-white/10" />
+            <div className="text-center">
+              <p className="text-lg font-display font-bold text-primary-400">{AGENCY.reviews.rating}/5</p>
+              <p className="text-[10px] text-white/50 uppercase tracking-wider">Rating</p>
+            </div>
+            <div className="w-px h-8 bg-white/10" />
+            <div className="text-center flex flex-col items-center">
+              <Award size={18} className="text-secondary-500 mb-0.5" />
+              <p className="text-[10px] text-white/50 uppercase tracking-wider">RUI</p>
+            </div>
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator - Mobile */}
+        {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -245,79 +229,74 @@ const HeroSection = () => {
   }
 
   // ================================================
-  // DESKTOP HERO (≥769px) - Original design preserved
+  // DESKTOP HERO (≥769px) - Professional lead-focused
   // ================================================
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-white">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-white via-primary-50/30 to-white" />
       
-      {/* Animated gradient orb */}
+      {/* Animated gradient orbs */}
       <motion.div
-        animate={{ 
-          x: [0, 30, 0],
-          y: [0, -20, 0],
-          scale: [1, 1.1, 1],
-        }}
+        animate={{ x: [0, 30, 0], y: [0, -20, 0], scale: [1, 1.1, 1] }}
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-bl from-primary-100/50 via-primary-50/30 to-transparent rounded-full blur-3xl"
       />
       <motion.div
-        animate={{ 
-          x: [0, -20, 0],
-          y: [0, 30, 0],
-          scale: [1, 1.15, 1],
-        }}
+        animate={{ x: [0, -20, 0], y: [0, 30, 0], scale: [1, 1.15, 1] }}
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
         className="absolute -bottom-40 -left-40 w-[600px] h-[600px] bg-gradient-to-tr from-secondary-100/40 via-secondary-50/20 to-transparent rounded-full blur-3xl"
       />
 
-      {/* Subtle grid */}
+      {/* Grid pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e3a8a05_1px,transparent_1px),linear-gradient(to_bottom,#1e3a8a05_1px,transparent_1px)] bg-[size:4rem_4rem]" />
 
       <div className="container mx-auto px-6 md:px-12 lg:px-16 relative z-10 py-16 md:py-20 lg:py-24 max-w-[1400px]">
-        {/* ← LAYOUT MIGLIORATO: 55% text / 45% image grid con gap 60px */}
         <div className={`grid gap-10 md:gap-12 lg:gap-16 items-center ${isTablet ? 'grid-cols-1' : 'lg:grid-cols-[1.1fr_1fr]'}`}>
           
-          {/* Left Content - 55% width desktop */}
+          {/* Left Content */}
           <div className="space-y-6 lg:space-y-8">
             
-            {/* ← NUOVO: Badge Certificazione Top */}
+            {/* Location + RUI Badge */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="flex flex-wrap items-center gap-3"
             >
-              <div 
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
-                style={{
-                  background: 'rgba(59, 130, 246, 0.1)',
-                  border: '1px solid rgba(59, 130, 246, 0.3)',
-                }}
-              >
-                <Award size={16} className="text-primary-600" />
-                <span className="text-sm font-semibold text-primary-600">Agenzia Certificata • 2.500+ Clienti Protetti</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-100">
+                <MapPin size={16} className="text-primary-600" />
+                <span className="text-sm font-semibold text-primary-700">{AGENCY.serviceArea}</span>
               </div>
+              <a 
+                href={AGENCY.ruiLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 border border-neutral-200 hover:bg-neutral-200 transition-colors"
+              >
+                <Award size={14} className="text-secondary-600" />
+                <span className="text-xs font-medium text-neutral-600">RUI: {AGENCY.rui}</span>
+              </a>
             </motion.div>
 
-            {/* Brand Name + Logo */}
+            {/* Brand */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-600 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-600/30">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-700 to-primary-800 flex items-center justify-center shadow-lg shadow-primary-700/30">
                   <Shield className="w-7 h-7 text-white" />
                 </div>
                 <div>
                   <h2 className="text-2xl lg:text-3xl font-display font-bold text-primary-900">Cardamone</h2>
-                  <p className="text-sm font-semibold text-secondary-500 uppercase tracking-wider">Assicurazioni</p>
+                  <p className="text-sm font-semibold text-secondary-600 uppercase tracking-wider">Assicurazioni</p>
                 </div>
               </div>
             </motion.div>
 
-            {/* Rating Badge Row */}
+            {/* Rating Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -326,20 +305,16 @@ const HeroSection = () => {
             >
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white shadow-lg border border-neutral-100">
                 <div className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, i) => (
+                  {[...Array(AGENCY.reviews.rating)].map((_, i) => (
                     <Star key={i} size={14} className="fill-secondary-500 text-secondary-500" />
                   ))}
                 </div>
-                <span className="text-sm font-bold text-neutral-900">4.9/5</span>
-                <span className="text-sm text-neutral-500">Google</span>
-              </div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-50 border border-primary-100">
-                <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse" />
-                <span className="text-sm font-medium text-primary-700">Consulenze disponibili</span>
+                <span className="text-sm font-bold text-neutral-900">{AGENCY.reviews.rating}/5</span>
+                <span className="text-sm text-neutral-500">Google ({AGENCY.reviews.count} recensioni)</span>
               </div>
             </motion.div>
 
-            {/* Main Headline - Typography scale improved */}
+            {/* Main Headline */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -347,38 +322,38 @@ const HeroSection = () => {
             >
               <h1 
                 className="font-display font-bold leading-[1.1] tracking-tight text-neutral-900"
-                style={{ fontSize: 'clamp(32px, 8vw, 64px)' }}
+                style={{ fontSize: 'clamp(32px, 6vw, 56px)' }}
               >
-                La Tua
-                <span className="block text-primary-600">Protezione</span>
+                Il Tuo Assicuratore
+                <span className="block text-primary-700">di Fiducia</span>
                 <span className="relative inline-block">
-                  su Misura
+                  a {AGENCY.address.city}
                   <motion.div
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
-                    className="absolute -bottom-2 left-0 w-full h-1.5 bg-gradient-to-r from-secondary-400 to-secondary-500 rounded-full origin-left"
+                    className="absolute -bottom-2 left-0 w-full h-1.5 bg-gradient-to-r from-secondary-500 to-secondary-600 rounded-full origin-left"
                   />
                 </span>
               </h1>
               <p 
                 className="mt-6 text-neutral-600 max-w-[520px] leading-relaxed" 
-                style={{ fontSize: 'clamp(14px, 4vw, 18px)', lineHeight: 1.6 }}
+                style={{ fontSize: 'clamp(14px, 3vw, 18px)', lineHeight: 1.7 }}
               >
-                Da oltre <strong className="text-neutral-900">15 anni</strong> siamo il punto di riferimento 
-                per famiglie e imprese. Soluzioni assicurative <strong className="text-neutral-900">personalizzate</strong> con 
-                le migliori compagnie del mercato.
+                Da oltre <strong className="text-neutral-900">{AGENCY.experience.years} anni</strong> al servizio di famiglie e imprese. 
+                Confrontiamo le <strong className="text-neutral-900">migliori compagnie</strong> per trovare la polizza perfetta per te, 
+                con <strong className="text-neutral-900">assistenza sinistri dedicata</strong>.
               </p>
             </motion.div>
 
-            {/* ← NUOVO: Checkmarks List 2x2 Grid con stagger animation */}
+            {/* Benefits Grid */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               className="grid grid-cols-1 sm:grid-cols-2 gap-3"
             >
-              {benefits.map((benefit, index) => (
+              {heroBenefits.map((benefit, index) => (
                 <motion.div 
                   key={index} 
                   className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50/50 border border-neutral-100/50 hover:bg-primary-50/50 hover:border-primary-100 transition-colors duration-200"
@@ -402,15 +377,15 @@ const HeroSection = () => {
               className="flex flex-col sm:flex-row gap-4"
             >
               <Link 
-                to="/contatti" 
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white bg-primary-600 rounded-xl shadow-lg shadow-primary-600/30 hover:bg-primary-700 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                to="/preventivo" 
+                className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white bg-primary-700 rounded-xl shadow-lg shadow-primary-700/30 hover:bg-primary-800 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                 style={{ minHeight: '56px' }}
               >
                 Richiedi Preventivo Gratuito
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <a 
-                href="tel:+390000000000" 
+                href={`tel:${AGENCY.phone.fissoClean}`}
                 className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-primary-700 bg-white border-2 border-primary-100 rounded-xl hover:border-primary-200 hover:bg-primary-50 transition-all duration-300"
                 style={{ minHeight: '56px' }}
               >
@@ -419,38 +394,34 @@ const HeroSection = () => {
               </a>
             </motion.div>
 
-            {/* ← NUOVO: Inline Stats Cards 3 colonne */}
+            {/* Contact options */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.6 }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6"
+              className="flex flex-wrap items-center gap-4 pt-4 border-t border-neutral-100"
             >
-              {statsWithIcons.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.65 + index * 0.1 }}
-                  className="flex items-center gap-3 px-4 py-4 rounded-xl hover:shadow-md transition-all duration-200"
-                  style={{
-                    background: 'rgba(59, 130, 246, 0.05)',
-                    border: '1px solid rgba(59, 130, 246, 0.2)',
-                  }}
-                >
-                  <div className="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
-                    <stat.icon size={20} className="text-primary-600" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-neutral-900 text-lg">{stat.value}</p>
-                    <p className="text-xs text-neutral-600">{stat.label}</p>
-                  </div>
-                </motion.div>
-              ))}
+              <span className="text-sm text-neutral-500">Oppure contattaci:</span>
+              <a 
+                href={AGENCY.whatsapp.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-50 text-green-700 hover:bg-green-100 transition-colors"
+              >
+                <MessageCircle size={16} />
+                <span className="text-sm font-medium">WhatsApp</span>
+              </a>
+              <a 
+                href={`tel:${AGENCY.phone.fissoClean}`}
+                className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-primary-600 transition-colors"
+              >
+                <Phone size={14} />
+                {AGENCY.phone.fisso}
+              </a>
             </motion.div>
           </div>
 
-          {/* Right Content - Image + Floating Card - 45% width */}
+          {/* Right Content - Image + Floating Elements */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -465,90 +436,72 @@ const HeroSection = () => {
                 className="absolute -inset-4 bg-gradient-to-br from-primary-100 to-secondary-100/50 rounded-[2rem] opacity-70"
               />
               
-              {/* Main Card - IMMAGINE PROFESSIONALE */}
+              {/* Main Image Card */}
               <div className="relative bg-white rounded-[20px] overflow-hidden border border-neutral-100"
                 style={{ boxShadow: '0 20px 60px rgba(30, 58, 138, 0.15)' }}
               >
                 <img 
-                  src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=600&fit=crop&crop=center"
-                  alt="Consulente assicurativo professionista - Cardamone Assicurazioni"
+                  src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop&crop=center"
+                  alt="Consulente assicurativo - Cardamone Assicurazioni Cornaredo"
                   className="w-full object-cover"
                   style={{ height: isTablet ? '400px' : '500px' }}
                   loading="eager"
                   fetchpriority="high"
                 />
                 
-                {/* Overlay gradiente blu semi-trasparente 20-30% */}
+                {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-primary-900/70 via-primary-900/15 to-transparent" />
                 
                 {/* Bottom content */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-                  <p className="text-white/90 text-sm mb-2 uppercase tracking-wider font-semibold">Il Team Cardamone</p>
-                  <p className="text-white font-display font-bold text-xl lg:text-2xl">Sempre al tuo fianco</p>
+                  <p className="text-white/90 text-sm mb-2 uppercase tracking-wider font-semibold">Francesco Cardamone</p>
+                  <p className="text-white font-display font-bold text-xl lg:text-2xl">Il tuo consulente di fiducia</p>
                 </div>
               </div>
 
-              {/* Floating Card - Clienti protetti (top-left) */}
+              {/* Floating Card - Experience */}
               <motion.div
                 animate={prefersReducedMotion ? {} : { y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 className="absolute -top-4 -left-4 lg:-top-6 lg:-left-6 bg-white rounded-2xl shadow-xl p-4 border border-neutral-100 z-10"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-primary-600 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-xl bg-primary-700 flex items-center justify-center">
                     <Shield className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="font-bold text-neutral-900">2.500+</p>
-                    <p className="text-xs text-neutral-500">Clienti protetti</p>
+                    <p className="font-bold text-neutral-900">{AGENCY.experience.years}+ anni</p>
+                    <p className="text-xs text-neutral-500">di esperienza</p>
                   </div>
                 </div>
               </motion.div>
 
-              {/* ← NUOVO: Floating Testimonial Card Overlay (bottom-right) */}
+              {/* Floating Card - Location */}
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
                 className={`bg-white rounded-2xl p-5 border border-neutral-100 z-20 ${
-                  isTablet 
-                    ? 'mt-4 w-full' 
-                    : 'absolute -bottom-10 -right-10 w-[280px]'
+                  isTablet ? 'mt-4 w-full' : 'absolute -bottom-10 -right-10 w-[280px]'
                 }`}
-                style={{ 
-                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
-                  backdropFilter: 'blur(10px)',
-                }}
+                style={{ boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)' }}
               >
-                {/* Testimonial Header */}
                 <div className="flex items-center gap-3 mb-3">
-                  <img 
-                    src={featuredTestimonial.image}
-                    alt={featuredTestimonial.name}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-primary-100"
-                  />
-                  <div>
-                    <p className="font-semibold text-neutral-900 text-sm">{featuredTestimonial.name}</p>
-                    <p className="text-xs text-neutral-500">{featuredTestimonial.role}</p>
-                  </div>
+                  <MapPin size={20} className="text-primary-600" />
+                  <p className="font-semibold text-neutral-900">Dove Trovarci</p>
                 </div>
-
-                {/* Quote */}
-                <div className="relative mb-3">
-                  <Quote size={16} className="absolute -top-1 -left-1 text-primary-200" />
-                  <p className="text-sm text-neutral-600 italic leading-relaxed pl-4">
-                    "{featuredTestimonial.text}"
-                  </p>
-                </div>
-
-                {/* Rating */}
-                <div className="flex items-center gap-2 pt-3 border-t border-neutral-100">
-                  <div className="flex gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={14} className="fill-secondary-500 text-secondary-500" />
-                    ))}
-                  </div>
-                  <span className="text-sm font-bold text-neutral-900">{featuredTestimonial.rating}/5</span>
+                <p className="text-sm text-neutral-600 mb-2">{AGENCY.address.street}</p>
+                <p className="text-sm text-neutral-500">{AGENCY.address.cap} {AGENCY.address.city} ({AGENCY.address.province})</p>
+                <div className="mt-4 pt-3 border-t border-neutral-100">
+                  <a 
+                    href={AGENCY.address.googleMapsLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary-600 font-medium hover:text-primary-700 transition-colors flex items-center gap-1"
+                  >
+                    Apri in Google Maps
+                    <ArrowRight size={14} />
+                  </a>
                 </div>
               </motion.div>
             </div>
@@ -571,7 +524,7 @@ const HeroSection = () => {
           <motion.div
             animate={{ y: [0, 8, 0], opacity: [1, 0.3, 1] }}
             transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1.5 h-1.5 rounded-full bg-primary-500"
+            className="w-1.5 h-1.5 rounded-full bg-primary-600"
           />
         </motion.div>
       </motion.div>

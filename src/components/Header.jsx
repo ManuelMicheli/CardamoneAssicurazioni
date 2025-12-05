@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Phone, Mail, Shield, ArrowRight, Star } from 'lucide-react'
+import { Menu, X, Phone, Mail, Shield, ArrowRight, Star, MessageCircle } from 'lucide-react'
+import { AGENCY } from '../config/agency'
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -9,7 +10,6 @@ const Header = () => {
   const [isMobile, setIsMobile] = useState(false)
   const location = useLocation()
 
-  // Detect mobile viewport
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768)
     checkMobile()
@@ -27,7 +27,6 @@ const Header = () => {
     setIsMobileMenuOpen(false)
   }, [location])
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen && isMobile) {
       document.body.style.overflow = 'hidden'
@@ -46,22 +45,30 @@ const Header = () => {
 
   return (
     <>
-      {/* Top Bar - Desktop Only */}
-      <div className="hidden lg:block bg-primary-700 text-white py-2">
+      {/* Top Bar - Desktop Only - Dati Reali */}
+      <div className="hidden lg:block bg-primary-800 text-white py-2">
         <div className="container-custom flex justify-between items-center text-sm">
           <div className="flex items-center gap-6">
-            <a href="tel:+390000000000" className="flex items-center gap-2 hover:text-secondary-400 transition-colors">
+            <a href={`tel:${AGENCY.phone.fissoClean}`} className="flex items-center gap-2 hover:text-secondary-400 transition-colors">
               <Phone size={14} />
-              <span>+39 000 000 0000</span>
+              <span>{AGENCY.phone.fisso}</span>
             </a>
-            <a href="mailto:info@cardamoneassicurazioni.it" className="flex items-center gap-2 hover:text-secondary-400 transition-colors">
-              <Mail size={14} />
-              <span>info@cardamoneassicurazioni.it</span>
+            <a href={AGENCY.whatsapp.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-secondary-400 transition-colors">
+              <MessageCircle size={14} />
+              <span>WhatsApp</span>
             </a>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-secondary-400">★</span>
-            <span>4.9/5 su Google Reviews</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-0.5">
+                {[...Array(AGENCY.reviews.rating)].map((_, i) => (
+                  <Star key={i} size={12} className="fill-secondary-400 text-secondary-400" />
+                ))}
+              </div>
+              <span className="text-white/90">{AGENCY.reviews.text}</span>
+            </div>
+            <span className="text-white/50">|</span>
+            <span className="text-white/70 text-xs">RUI: {AGENCY.rui}</span>
           </div>
         </div>
       </div>
@@ -79,13 +86,13 @@ const Header = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
               <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.6 }}>
-                <div className="w-11 h-11 rounded-xl bg-primary-600 flex items-center justify-center shadow-lg shadow-primary-600/30">
+                <div className="w-11 h-11 rounded-xl bg-primary-700 flex items-center justify-center shadow-lg shadow-primary-700/30">
                   <Shield className="w-6 h-6 text-white" />
                 </div>
               </motion.div>
               <div className="flex flex-col">
                 <span className="font-display text-xl font-bold text-primary-900">Cardamone</span>
-                <span className="text-xs font-semibold text-secondary-500 uppercase tracking-wider">Assicurazioni</span>
+                <span className="text-xs font-semibold text-secondary-600 uppercase tracking-wider">Assicurazioni</span>
               </div>
             </Link>
 
@@ -112,7 +119,17 @@ const Header = () => {
 
             {/* CTA */}
             <div className="flex items-center gap-4">
-              <Link to="/contatti" className="px-6 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors shadow-lg shadow-primary-600/30">
+              <a 
+                href={`tel:${AGENCY.phone.fissoClean}`}
+                className="flex items-center gap-2 text-primary-700 font-medium hover:text-primary-800 transition-colors"
+              >
+                <Phone size={16} />
+                <span className="hidden xl:inline">{AGENCY.phone.fisso}</span>
+              </a>
+              <Link 
+                to="/preventivo" 
+                className="px-6 py-2.5 bg-primary-700 text-white font-semibold rounded-xl hover:bg-primary-800 transition-colors shadow-lg shadow-primary-700/30"
+              >
                 Richiedi Preventivo
               </Link>
             </div>
@@ -120,10 +137,7 @@ const Header = () => {
         </div>
       </motion.header>
 
-      {/* ================================================
-          MOBILE HEADER PREMIUM (≤768px)
-          Fixed slim top bar with glassmorphism effect
-          ================================================ */}
+      {/* Mobile Header Premium (≤768px) */}
       <header 
         className={`lg:hidden fixed top-0 left-0 right-0 z-50 h-[70px] flex items-center justify-between px-4 transition-all duration-300
           ${isScrolled 
@@ -133,18 +147,16 @@ const Header = () => {
         `}
         style={{ willChange: 'transform, background-color' }}
       >
-        {/* Mobile Logo - Left */}
         <Link to="/" className="flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-600 to-primary-700 flex items-center justify-center shadow-md shadow-primary-600/25">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-700 to-primary-800 flex items-center justify-center shadow-md shadow-primary-700/25">
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div className="flex flex-col">
             <span className="font-display text-lg font-bold text-primary-900 leading-tight">Cardamone</span>
-            <span className="text-[10px] font-semibold text-secondary-500 uppercase tracking-wider leading-tight">Assicurazioni</span>
+            <span className="text-[10px] font-semibold text-secondary-600 uppercase tracking-wider leading-tight">Assicurazioni</span>
           </div>
         </Link>
 
-        {/* Mobile Hamburger - Right */}
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
           className="w-12 h-12 flex items-center justify-center rounded-xl bg-neutral-50 hover:bg-neutral-100 active:bg-neutral-200 transition-colors"
@@ -176,10 +188,7 @@ const Header = () => {
         </button>
       </header>
 
-      {/* ================================================
-          MOBILE MENU OVERLAY PREMIUM (≤768px)
-          Full-screen dark overlay with slide-in animation
-          ================================================ */}
+      {/* Mobile Menu Overlay Premium */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -189,15 +198,13 @@ const Header = () => {
             transition={{ duration: 0.3 }}
             className="lg:hidden fixed inset-0 z-40"
           >
-            {/* Dark gradient background */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-gradient-to-b from-slate-900 via-primary-900 to-indigo-950"
+              className="absolute inset-0 bg-gradient-to-b from-slate-900 via-primary-900 to-primary-950"
             />
             
-            {/* Subtle pattern overlay */}
             <div 
               className="absolute inset-0 opacity-30"
               style={{
@@ -205,17 +212,12 @@ const Header = () => {
               }}
             />
             
-            {/* Animated glow orb */}
             <motion.div
-              animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.5, 0.3]
-              }}
+              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
               transition={{ duration: 4, repeat: Infinity }}
               className="absolute top-1/4 right-0 w-64 h-64 bg-primary-500/20 rounded-full blur-[100px]"
             />
 
-            {/* Menu content */}
             <motion.div 
               initial={{ y: -50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -223,7 +225,6 @@ const Header = () => {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="relative flex flex-col items-center justify-center min-h-screen pt-[70px] pb-8 px-6"
             >
-              {/* Nav Links */}
               <nav className="flex flex-col items-center gap-2 w-full max-w-xs">
                 {navLinks.map((link, index) => (
                   <motion.div
@@ -244,14 +245,13 @@ const Header = () => {
                       `}
                     >
                       {link.name}
-                      {/* Active link glow underline */}
                       {location.pathname === link.path && (
                         <motion.div
                           layoutId="mobileActiveNav"
                           className="absolute bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full"
                           style={{
-                            background: 'linear-gradient(90deg, #f59e0b, #fbbf24)',
-                            boxShadow: '0 2px 15px rgba(245, 158, 11, 0.6)'
+                            background: 'linear-gradient(90deg, #d97706, #f59e0b)',
+                            boxShadow: '0 2px 15px rgba(217, 119, 6, 0.6)'
                           }}
                         />
                       )}
@@ -260,50 +260,54 @@ const Header = () => {
                 ))}
               </nav>
 
-              {/* CTA Button */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 30 }}
                 transition={{ delay: 0.4, duration: 0.4 }}
-                className="mt-8 w-full max-w-xs"
+                className="mt-8 w-full max-w-xs space-y-3"
               >
                 <Link 
-                  to="/contatti" 
+                  to="/preventivo" 
                   className="flex items-center justify-center gap-2 w-full py-4 px-6 rounded-2xl font-bold text-lg
-                    bg-gradient-to-r from-primary-500 to-primary-600 text-white
-                    shadow-lg shadow-primary-500/30
+                    bg-gradient-to-r from-primary-600 to-primary-700 text-white
+                    shadow-lg shadow-primary-600/30
                     active:scale-[0.98] transition-transform"
-                  style={{
-                    minHeight: '60px',
-                    animation: 'mobilePulse 2.5s ease-in-out infinite'
-                  }}
+                  style={{ minHeight: '60px' }}
                 >
                   Richiedi Preventivo
                   <ArrowRight className="w-5 h-5" />
                 </Link>
+                
+                <a 
+                  href={`tel:${AGENCY.phone.fissoClean}`}
+                  className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-2xl font-semibold
+                    bg-white/10 text-white border border-white/20
+                    active:bg-white/20 transition-colors"
+                >
+                  <Phone size={18} />
+                  Chiama Ora
+                </a>
               </motion.div>
 
-              {/* Contact info */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
                 className="mt-10 flex flex-col items-center gap-4"
               >
-                <a href="tel:+390000000000" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
-                  <Phone size={16} className="text-secondary-400" />
-                  <span className="text-sm">+39 000 000 0000</span>
+                <a href={`tel:${AGENCY.phone.fissoClean}`} className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+                  <Phone size={16} className="text-secondary-500" />
+                  <span className="text-sm">{AGENCY.phone.fisso}</span>
                 </a>
                 
-                {/* Rating badge */}
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm">
                   <div className="flex gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={12} className="fill-secondary-400 text-secondary-400" />
+                    {[...Array(AGENCY.reviews.rating)].map((_, i) => (
+                      <Star key={i} size={12} className="fill-secondary-500 text-secondary-500" />
                     ))}
                   </div>
-                  <span className="text-white/80 text-sm font-medium">4.9/5 Google</span>
+                  <span className="text-white/80 text-sm font-medium">{AGENCY.reviews.text}</span>
                 </div>
               </motion.div>
             </motion.div>

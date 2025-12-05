@@ -1,7 +1,7 @@
 import { useInView } from 'react-intersection-observer'
 import { motion } from 'framer-motion'
-import InteractiveBackground from '../InteractiveBackground'
 
+// Sezione Partner - Carousel a scorrimento infinito
 const PartnersSection = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
 
@@ -29,17 +29,20 @@ const PartnersSection = () => {
 
   return (
     <section ref={ref} className="relative py-16 bg-white overflow-hidden">
-      {/* Interactive Background - Forme geometriche subtle */}
-      <InteractiveBackground variant="geometric" color="neutral" intensity={0.25} />
       <div className="container-custom mb-8">
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="text-center text-neutral-500 font-medium uppercase tracking-wider text-sm"
+          className="text-center"
         >
-          Partner con le migliori compagnie
-        </motion.p>
+          <span className="inline-block px-4 py-1.5 rounded-full bg-neutral-100 text-neutral-600 text-sm font-semibold mb-3">
+            Le Nostre Compagnie
+          </span>
+          <p className="text-neutral-500 font-medium">
+            Collaboriamo con le migliori compagnie assicurative
+          </p>
+        </motion.div>
       </div>
 
       {/* Infinite Scrolling Track */}
@@ -50,21 +53,11 @@ const PartnersSection = () => {
         
         {/* Scrolling Container */}
         <div className="partners-scroll flex gap-6 md:gap-8">
-          {/* First set */}
-          {partners.map((partner, index) => (
-            <PartnerCard key={`set1-${index}`} partner={partner} />
-          ))}
-          {/* Second set */}
-          {partners.map((partner, index) => (
-            <PartnerCard key={`set2-${index}`} partner={partner} />
-          ))}
-          {/* Third set */}
-          {partners.map((partner, index) => (
-            <PartnerCard key={`set3-${index}`} partner={partner} />
-          ))}
-          {/* Fourth set for extra coverage */}
-          {partners.map((partner, index) => (
-            <PartnerCard key={`set4-${index}`} partner={partner} />
+          {/* Duplicate sets for infinite scroll effect */}
+          {[...Array(4)].map((_, setIndex) => (
+            partners.map((partner, index) => (
+              <PartnerCard key={`set${setIndex}-${index}`} partner={partner} />
+            ))
           ))}
         </div>
       </div>
@@ -86,6 +79,12 @@ const PartnersSection = () => {
         
         .partners-container:hover .partners-scroll {
           animation-play-state: paused;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+          .partners-scroll {
+            animation: none;
+          }
         }
       `}</style>
     </section>
